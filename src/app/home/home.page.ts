@@ -1,12 +1,17 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { IonicModule} from '@ionic/angular';
+import { MercadoService } from '../services/mercadoService';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent],
+  imports: [IonicModule, CommonModule],
 })
 export class HomePage {
-  constructor() {}
+  constructor(public mercado: MercadoService) {
+    console.log('Produtos:', this.mercado.produtos);
+    console.log('Tarefas:', this.mercado.tarefas);
+  }
 }

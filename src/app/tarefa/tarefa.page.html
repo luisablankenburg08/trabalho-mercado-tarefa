@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>tarefa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">tarefa</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <ion-card *ngFor="let tarefa of listaTarefas">
+    <ion-card-header>
+       <b> {{tarefa.titulo}} </b>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Prioridade {{tarefa.prioridade }}</p>
+      <p> {{ tarefa.concluida ? 'Concluida'
+         : 'Pendente' }}</p>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <b>Cadastrar nova Tarefa </b>
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <label for="titulo"> Titulo da tarefa</label><br>
+        <!--
+          Coloquei o ngModel no input para que eu guarde
+          oq eu escrevi no input na variavel
+          tituloNovaTarefa
+        -->
+      <input [(ngModel)]="tituloNovaTarefa" name="titulo" type="text">
+      </div>
+      <br>
+      <div>
+        <label for="tipo">
+           Escolha a prioridade
+        </label>
+
+        <select name="prioridade"
+          [(ngModel)]="prioridadeNovaTarefa" >
+          <option value="alta">Alta</option>
+          <option value="media">Média</option>
+          <option value="baixa">Baixa</option>
+        </select>
+      </div>
+      <br>
+      <ion-button>
+        Adicionar Tarefa
+      </ion-button>
+    </ion-card-content>
+
+
+  </ion-card>
+
+
+</ion-content>
