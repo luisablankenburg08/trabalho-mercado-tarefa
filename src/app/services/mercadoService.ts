@@ -16,7 +16,7 @@ export class MercadoService {
   tarefas: Tarefa[] = [
   {
     id: 1,
-    titulo: 'Repor gondola de bebidas',
+    titulo: 'Repor gondola das bebidas',
     concluida: false,
     prioridade: 'alta',
     dataCriacao: new Date('2026-05-20'),
