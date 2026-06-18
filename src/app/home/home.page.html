@@ -1,26 +1,57 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>🛒 Produtos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/tarefa">Tarefas</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
 
-  <div *ngFor="let produto of mercado.produtos">
-    <ion-card>
-      <ion-card-header>
-        <span> <b>{{ produto.nome}}</b> </span>
-      </ion-card-header>
-      <ion-card-content>
-        <p> estoque:  {{ produto.estoque}}
-          <span *ngIf="produto.estoque <=  3">
-            Esgotando..
-          </span>
-        </p>
-      </ion-card-content>
-    </ion-card>
-  </div>
-  <ion-button> Teste </ion-button>
+  <ion-card *ngIf="mercado.produtos.length > 0" class="card-total">
+    <ion-card-header>
+      <ion-card-title>Valor total em estoque</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>{{ mercado.formatarPreco(mercado.calcularTotalEstoque()) }}</h2>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let produto of mercado.produtos">
+    <ion-card-header>
+      <ion-card-title>{{ produto.nome }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Preço: {{ mercado.formatarPreco(produto.preco) }}</p>
+      <p>
+        Estoque: {{ produto.estoque }}
+        <ion-badge *ngIf="produto.estoque <= 3" color="danger">Esgotando!</ion-badge>
+      </p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Cadastrar Produto</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Nome</ion-label>
+        <ion-input [(ngModel)]="nomeNovoProduto" placeholder="Ex: Macarrão 500g"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Preço</ion-label>
+        <ion-input type="number" [(ngModel)]="precoNovoProduto" placeholder="Ex: 5.99"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Estoque</ion-label>
+        <ion-input type="number" [(ngModel)]="estoqueNovoProduto" placeholder="Ex: 50"></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="adicionarProduto()" style="margin-top:12px">
+        Adicionar Produto
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

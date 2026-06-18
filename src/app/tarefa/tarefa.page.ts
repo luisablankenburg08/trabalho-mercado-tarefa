@@ -1,84 +1,35 @@
-import { FormsModule } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Tarefa } from '../models/tarefa';
+import { RouterModule } from '@angular/router';
+import { MercadoService } from '../services/mercadoService';
 
 @Component({
   selector: 'app-tarefa',
   templateUrl: './tarefa.page.html',
   styleUrls: ['./tarefa.page.scss'],
   standalone: true,
-  imports: [FormsModule, IonicModule, CommonModule],
+  imports: [CommonModule, FormsModule, IonicModule, RouterModule],
 })
-export class TarefaPage implements OnInit {
+export class TarefaPage {
 
-  tituloNovaTarefa = ''
-  prioridadeNovaTarefa = ''
+  tituloNovaTarefa = '';
+  prioridadeNovaTarefa: 'baixa' | 'media' | 'alta' = 'media';
+  filtroAtivo: 'todos' | 'concluidas' | 'pendentes' = 'todos';
 
-  constructor() { }
+  constructor(public mercado: MercadoService) {}
 
-  ngOnInit() {
+  get tarefasExibidas() {
+    if (this.filtroAtivo === 'concluidas') return this.mercado.filtrarTarefas(true);
+    if (this.filtroAtivo === 'pendentes')  return this.mercado.filtrarTarefas(false);
+    return this.mercado.tarefas;
   }
 
-  listaTarefas: Tarefa[] = [
-    {
-      id: 1, titulo: 'Limpar casa', concluida: false,
-      prioridade: 'baixa', dataCriacao: new Date()
-    },
-    {
-      id: 2, titulo: 'Lavar louça', concluida: true,
-      prioridade: 'alta', dataCriacao: new Date()
-    },
-    {
-      id: 3,
-      titulo: 'Preparar aula',
-      concluida: false,
-      prioridade: 'media',
-      dataCriacao: new Date()
-    },
-    {
-      id: 4,
-      titulo: 'Estudar', concluida: false, prioridade: 'media',
-      dataCriacao: new Date()
-    },
-    {
-      id: 5,
-      titulo: 'Ir ao mercado',
-      concluida: true, prioridade: 'media', dataCriacao: new Date()
-    }
-  ]
-
-    filtrarTarefas(status: boolean){
-    let novaListaFiltrada = this.listaTarefas.filter(
-      tarefaAtual => tarefaAtual.concluida == status
-    )
-    return novaListaFiltrada
+  adicionarTarefa() {
+    if (!this.tituloNovaTarefa.trim()) return;
+    this.mercado.adicionarTarefa(this.tituloNovaTarefa, this.prioridadeNovaTarefa);
+    this.tituloNovaTarefa = '';
   }
-
-  contarPrioridade(){
-    let totalBaixas = 0;
-    let totalMedias = 0;
-    let totalAltas = 0;
-
-    this.listaTarefas.forEach(
-      tarefaAtual => {
-        if(tarefaAtual.prioridade == 'baixa'){
-          totalBaixas += 1
-        }else if(tarefaAtual.prioridade == 'media'){
-          totalMedias += 1
-        }else{
-          totalAltas += 1
-        }
-      }
-    )
-    return {
-        'baixas': totalBaixas,
-        'medias': totalMedias,
-        'altas': totalAltas
-      }
-  }
-
 
 }
-

@@ -1,27 +1,16 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+ion-card {
+  margin: 8px 12px;
+  border-radius: 10px;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.card-total {
+  background: linear-gradient(135deg, #3880ff, #1a56cc);
+
+  ion-card-title, h2 {
+    color: white;
+  }
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+ion-badge {
+  margin-left: 8px;
 }

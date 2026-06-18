@@ -1,62 +1,81 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>tarefa</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button routerLink="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>📋 Tarefas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">tarefa</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
 
+  <div class="filtros">
+    <ion-button
+      [fill]="filtroAtivo === 'todos' ? 'solid' : 'outline'"
+      (click)="filtroAtivo = 'todos'">Todas</ion-button>
+    <ion-button
+      [fill]="filtroAtivo === 'pendentes' ? 'solid' : 'outline'"
+      (click)="filtroAtivo = 'pendentes'">Pendentes</ion-button>
+    <ion-button
+      [fill]="filtroAtivo === 'concluidas' ? 'solid' : 'outline'"
+      (click)="filtroAtivo = 'concluidas'">Concluídas</ion-button>
+    <ion-button fill="outline" color="warning" (click)="mercado.ordenarPorPrioridade()">
+      Ordenar
+    </ion-button>
+  </div>
 
-  <ion-card *ngFor="let tarefa of listaTarefas">
+  <ion-card *ngFor="let tarefa of tarefasExibidas">
     <ion-card-header>
-       <b> {{tarefa.titulo}} </b>
+      <ion-card-title>{{ tarefa.titulo }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>Prioridade {{tarefa.prioridade }}</p>
-      <p> {{ tarefa.concluida ? 'Concluida'
-         : 'Pendente' }}</p>
+      <p>Prioridade: <strong>{{ tarefa.prioridade }}</strong></p>
+      <p>{{ tarefa.concluida ? '✅ Concluída' : '⏳ Pendente' }}</p>
+      <ion-button
+        size="small"
+        [color]="tarefa.concluida ? 'medium' : 'success'"
+        (click)="mercado.marcarConcluida(tarefa.id)">
+        {{ tarefa.concluida ? 'Reabrir' : 'Concluir' }}
+      </ion-button>
     </ion-card-content>
   </ion-card>
+
+  <p *ngIf="tarefasExibidas.length === 0" class="vazio">
+    Nenhuma tarefa encontrada.
+  </p>
+
   <ion-card>
     <ion-card-header>
-      <b>Cadastrar nova Tarefa </b>
+      <ion-card-title>Contagem por Prioridade</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <div>
-        <label for="titulo"> Titulo da tarefa</label><br>
-        <!--
-          Coloquei o ngModel no input para que eu guarde
-          oq eu escrevi no input na variavel
-          tituloNovaTarefa
-        -->
-      <input [(ngModel)]="tituloNovaTarefa" name="titulo" type="text">
-      </div>
-      <br>
-      <div>
-        <label for="tipo">
-           Escolha a prioridade
-        </label>
+      <p>🔴 Alta: {{ mercado.contarPorPrioridade().altas }}</p>
+      <p>🟡 Média: {{ mercado.contarPorPrioridade().medias }}</p>
+      <p>🟢 Baixa: {{ mercado.contarPorPrioridade().baixas }}</p>
+    </ion-card-content>
+  </ion-card>
 
-        <select name="prioridade"
-          [(ngModel)]="prioridadeNovaTarefa" >
-          <option value="alta">Alta</option>
-          <option value="media">Média</option>
-          <option value="baixa">Baixa</option>
-        </select>
-      </div>
-      <br>
-      <ion-button>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Nova Tarefa</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Título</ion-label>
+        <ion-input [(ngModel)]="tituloNovaTarefa" placeholder="Ex: Repor seção de frios"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Prioridade</ion-label>
+        <ion-select [(ngModel)]="prioridadeNovaTarefa">
+          <ion-select-option value="alta">Alta</ion-select-option>
+          <ion-select-option value="media">Média</ion-select-option>
+          <ion-select-option value="baixa">Baixa</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button expand="block" (click)="adicionarTarefa()" style="margin-top:12px">
         Adicionar Tarefa
       </ion-button>
     </ion-card-content>
-
-
   </ion-card>
-
 
 </ion-content>
